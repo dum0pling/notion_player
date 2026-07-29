@@ -16,22 +16,27 @@
 
   * { box-sizing: border-box; }
 
-  body {
+  /* ★ 1. 스크롤바 완전 제거 및 화면 중앙 정렬 ★ */
+  html, body {
     margin: 0; padding: 0;
+    overflow: hidden !important; /* 스크롤바 방지 */
+    width: 100%;
+    height: 100%;
     font-family: 'Nunito', sans-serif;
-    /* ★ 전체 배경을 투명하게 변경했습니다 ★ */
     background-color: transparent; 
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
   }
 
+  /* ★ 2. 플레이어 크기 줄이기 (0.8 = 80% 크기) ★ */
   #app-cover {
     position: relative;
     width: 430px;
     height: 100px;
     margin-top: 50px;
+    transform: scale(0.85); /* 0.8이나 0.85로 원하시는 크기만큼 조절 가능합니다! */
+    transform-origin: center center;
   }
 
   #player-track {
@@ -50,50 +55,44 @@
   }
 
   #album-name { color: var(--text-sub); font-size: 13px; font-weight: 700; }
- /* 제목을 감싸는 틀: 아티스트 이름 시작 위치에 딱 맞춰 제한 */
-/* 제목을 감싸는 컨테이너 */
-.track-name-container {
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  margin: 3px 0 8px 0;
-}
 
-/* 두 글자가 일렬로 길게 이어지도록 설정 */
-#track-name { 
-  color: var(--text); 
-  font-size: 15px; 
-  font-weight: 700; 
-  display: inline-block;
-  white-space: nowrap;
-}
-
-/* 기본 제목 속성 및 간격 */
-.title-text {
-  display: inline-block;
-  padding-right: 50px;
-}
-
-/* 기본 상태에서는 복사본을 숨겨서 꼬랑지를 제거합니다 */
-.title-text-duplicate {
-  display: none;
-  padding-right: 50px;
-}
-
-/* 애니메이션이 켜졌을 때(is-scrolling 클래스가 붙었을 때)만 복사본을 보여줍니다 */
-#track-name.is-scrolling .title-text-duplicate {
-  display: inline-block;
-}
-
-/* 딱 절반(-50%) 이동할 때 복사본 위치가 원본 위치와 일치하면서 끊김 없이 회전 */
-@keyframes marquee {
-  0% {
-    transform: translateX(0%);
+  .track-name-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 3px 0 8px 0;
   }
-  100% {
-    transform: translateX(-50%);
+
+  #track-name { 
+    color: var(--text); 
+    font-size: 15px; 
+    font-weight: 700; 
+    display: inline-block;
+    white-space: nowrap;
   }
-}
+
+  .title-text {
+    display: inline-block;
+    padding-right: 50px;
+  }
+
+  .title-text-duplicate {
+    display: none;
+    padding-right: 50px;
+  }
+
+  #track-name.is-scrolling .title-text-duplicate {
+    display: inline-block;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
 
   #track-time { display: flex; justify-content: space-between; font-size: 11px; color: var(--primary); font-weight: 700; margin-bottom: 5px; }
 
@@ -105,7 +104,7 @@
     top: 0; left: 0; width: 100%; height: 110%;
     background: var(--white);
     border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.1); /* 그림자도 자연스럽게 수정 */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
     z-index: 2;
     display: flex;
     align-items: center;
@@ -123,8 +122,6 @@
     border: 5px solid #fff;
     z-index: 3;
     transition: all 0.3s ease;
-    
-    /* ★ CD 가운데를 실제 투명하게 뚫는 코드 ★ */
     mask-image: radial-gradient(circle, transparent 15%, black 16%);
     -webkit-mask-image: radial-gradient(circle, transparent 15%, black 16%);
   }
@@ -146,10 +143,9 @@
   #play-pause-button {
     background: #573D2A; color: #fff;
     width: 50px; height: 50px; border-radius: 50%;
-    /* ★ 아래 속성들을 추가해서 테두리와 여백을 없애줍니다 ★ */
-  border: none;        /* 테두리 제거 */
-  outline: none;       /* 클릭 시 생기는 외곽선 제거 */
-  padding: 0;          /* 내부 여백 제거 */
+    border: none;
+    outline: none;
+    padding: 0;
     box-shadow: 0 5px 15px #755239;
   }
   #play-pause-button:hover { color: #fff; background: #755239; }
@@ -160,7 +156,6 @@
 <div id="app-cover">
  <div id="player-track">
   <div id="album-name">Artist Name</div>
-  <!-- ★ 아래처럼 컨테이너 태그로 감싸주세요 ★ -->
   <div class="track-name-container">
     <div id="track-name">
       <span class="title-text">Track Title</span>
@@ -195,163 +190,162 @@
 </div>
 
 <script>
-  // 직접 구하신 MP3 링크와 이미지 링크를 여기에 넣어주세요!
   const tracks = [
     {
       name: "LIMIT BREAK DREAMERS",
       artist: "MaM",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover01.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song01.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song01.mp3"          
     },
     {
       name: "ハロウィン・ランデブー",
       artist: "MaM",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover02.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song02.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song02.mp3"          
     },
     {
       name: "愉快痛快 That's alright!",
       artist: "MaM",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover03.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song03.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song03.mp3"          
     },
     {
       name: "HELLO, NEW YEAR!",
       artist: "MaM",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover04.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song04.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song04.mp3"          
     },
     {
       name: "ハンズクラフト",
       artist: "MaM",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover05.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song05.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song05.mp3"          
     },
     {
       name: "辻風に吹かれて",
       artist: "MaM (with team 牛若丸)",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover06.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song06.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song06.mp3"          
     },
     {
       name: "Blooming World",
       artist: "MaM",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover06.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song07.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song07.mp3"          
     },
     {
       name: "RevolTrad～維新伝心～",
       artist: "MaM (with 紅月)",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover06.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song08.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song08.mp3"          
     },
     {
       name: "君印 Be Ambitious!!",
       artist: "MaM",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover06.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song09.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song09.mp3"          
     },
     {
       name: "Festive!",
       artist: "MaM",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover06.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song10.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song10.mp3"          
     },
     {
       name: "See You Again",
       artist: "MaM",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover06.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song11.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song11.mp3"          
     },
     {
       name: "CROSS SHINE",
       artist: "MaM",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover12.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song12.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song12.mp3"          
     },
     {
       name: "セイクリッド ルイン",
       artist: "鉄虎 & 敬人 & 斑 & カンナ",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover13.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song13.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song13.mp3"          
     },
     {
       name: "BRIGHTEST STARS!! (MaM ver.)",
       artist: "MaM",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover14.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song14.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song14.mp3"          
     },
     {
       name: "BRAND NEW STARS!!",
       artist: "Double Face",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover15.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song15.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song15.mp3"          
     },
     {
       name: "Walk with your smile (Double Face ver.)",
       artist: "Double Face",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover16.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song16.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song16.mp3"          
     },
     {
       name: "Surprising Thanks!!",
       artist: "Double Face",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover17.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song17.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song17.mp3"          
     },
     {
       name: "FUSIONIC STARS!! (Double Face ver.)",
       artist: "Double Face",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover18.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song18.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song18.mp3"          
     },
     {
       name: "FIST OF SOUL",
       artist: "舞闘会",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover19.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song19.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song19.mp3"          
     },
     {
       name: "喪失寓意 -LOST BALLADE-",
       artist: "M∀N∀",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover20.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song20.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song20.mp3"          
     },
     {
       name: "らびゅ & ピース伝説",
       artist: "PM6:∞",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover21.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song21.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song21.mp3"          
     },
     {
       name: "両片思いの交差点で、君にまた逢いたくて",
       artist: "Love∞Scramble",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover22.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song22.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song22.mp3"          
     },
     {
       name: "夜に駆ける",
       artist: "ALKALOID & Double Face",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover23.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song23.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song23.mp3"          
     },
     {
       name: "Light on the Orbit",
       artist: "MaM",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover24.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song24.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song24.mp3"          
     },
     {
       name: "Bye-Bye Buddy",
       artist: "Double Face",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover25.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song25.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song25.mp3"          
     },
     {
       name: "ONLY YOUR STARS!(MaM ver.)",
       artist: "MaM",
       cover: "https://github.com/dum0pling/notion_playlist/blob/main/image/cover26.jpg?raw=true", 
-      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song26.mp3"         
+      source: "https://github.com/dum0pling/notion_playlist/raw/refs/heads/main/music/song26.mp3"          
     }
   ];
 
@@ -377,41 +371,36 @@
     audio.src = tracks[index].source;
     albumArt.style.backgroundImage = `url('${tracks[index].cover}')`;
     
-    // 1. 제목 및 가 수 텍스트 설정
     const titleMain = trackName.querySelector('.title-text') || trackName;
-  const titleDup = trackName.querySelector('.title-text-duplicate');
+    const titleDup = trackName.querySelector('.title-text-duplicate');
 
-  if (titleDup) {
-    titleMain.innerText = tracks[index].name;
-    titleDup.innerText = tracks[index].name;
-  } else {
-    trackName.innerText = tracks[index].name;
-  }
+    if (titleDup) {
+      titleMain.innerText = tracks[index].name;
+      titleDup.innerText = tracks[index].name;
+    } else {
+      trackName.innerText = tracks[index].name;
+    }
     albumName.innerText = tracks[index].artist;
     
-    // 2. 이전 애니메이션 초기화
     trackName.style.animation = "none";
     
-    // 3. 글자가 틀(Container)보다 길 때만 흐르는 애니메이션 적용
     setTimeout(() => {
-  const container = document.querySelector('.track-name-container');
-  const mainTitle = trackName.querySelector('.title-text') || trackName;
+      const container = document.querySelector('.track-name-container');
+      const mainTitle = trackName.querySelector('.title-text') || trackName;
 
-  if (container && mainTitle) {
-    const containerWidth = container.offsetWidth;
-    const textWidth = mainTitle.offsetWidth;
+      if (container && mainTitle) {
+        const containerWidth = container.offsetWidth;
+        const textWidth = mainTitle.offsetWidth;
 
-    // 긴 제목일 때
-    if (textWidth > containerWidth) {
-      trackName.classList.add('is-scrolling'); // 복사본 표시 켜기
-      trackName.style.animation = "marquee 15s linear infinite";
-    } else {
-      // 짧은 제목일 때
-      trackName.classList.remove('is-scrolling'); // 복사본 완전 숨기기
-      trackName.style.animation = "none";
-    }
-  }
-}, 50);
+        if (textWidth > containerWidth) {
+          trackName.classList.add('is-scrolling');
+          trackName.style.animation = "marquee 15s linear infinite";
+        } else {
+          trackName.classList.remove('is-scrolling');
+          trackName.style.animation = "none";
+        }
+      }
+    }, 50);
 
     audio.load();
     seekBar.style.width = "0%";
