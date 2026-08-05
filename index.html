@@ -14,9 +14,16 @@
     --text-sub: #fff;
   }
 
-  * { box-sizing: border-box; }
+  * { 
+    box-sizing: border-box; 
+    /* ★ 텍스트 파랗게 선택(드래그)되는 현상 완벽 방지 ★ */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 
-  /* 1. 상단 밀착 정렬로 변경하여 아래쪽 불필요한 빈공간 제거 */
+  /* ★ 1. 외부 여백 제거 및 상단 정렬 ★ */
   html, body {
     margin: 0; 
     padding: 0;
@@ -27,15 +34,15 @@
     background-color: transparent; 
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* ★ 중앙 정렬 대신 위쪽 정렬! */
+    align-items: flex-start;
   }
 
-  /* 2. 전체 프레임 위치 조율 (브라운 트랙 팝업 높이 90px 고려) */
+  /* ★ 2. 브라운 트랙 영역과 흰색 카드의 컴팩트 결합 ★ */
   #app-cover {
     position: relative;
     width: 380px; 
     height: 100px;
-    margin-top: 90px; /* ★ 트랙이 올라왔을 때 위쪽이 잘리지 않는 딱 맞는 여백 */
+    margin-top: 85px; /* 상단 트랙 팝업 공간만 딱 확보 */
   }
 
   #player-track {
@@ -46,11 +53,11 @@
     border-radius: 15px 15px 0 0;
     transition: top 0.4s ease;
     z-index: 1;
-    box-shadow: none; /* 상단 트랙 그림자 제거 */
+    box-shadow: none !important; /* 그림자 완전 제거 */
   }
 
   #player-track.active {
-    top: -90px;
+    top: -85px;
   }
 
   #album-name { color: var(--text-sub); font-size: 13px; font-weight: 700; }
@@ -94,13 +101,13 @@
   #s-area { width: 100%; height: 4px; background: #ffe8ee; border-radius: 4px; cursor: pointer; position: relative; }
   #seek-bar { width: 0%; height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.1s linear; }
 
-  /* 3. 하단 플레이어 본체 그림자 완전 제거 (box-shadow: none) */
+  /* ★ 3. 하단 플레이어 본체 그림자 0% 및 바닥 여백 제거 ★ */
   #player-content {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
     background: var(--white);
     border-radius: 20px;
-    box-shadow: none; /* ★ 하단 그림자 제거 완료! */
+    box-shadow: none !important; /* 모든 종류의 하단 그림자/잔상 100% 제거 */
     z-index: 2;
     display: flex;
     align-items: center;
@@ -113,7 +120,7 @@
     width: 115px;
     height: 115px;
     border-radius: 50%;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* CD 자체 입체감만 살짝 유지 */
     background-color: #fff;
     background-size: cover;
     background-position: center;
@@ -149,7 +156,7 @@
     border: none;
     outline: none;
     padding: 0;
-    box-shadow: 0 5px 15px #755239;
+    box-shadow: 0 4px 10px rgba(117, 82, 57, 0.4);
   }
   #play-pause-button:hover { color: #fff; background: #755239; }
 </style>
