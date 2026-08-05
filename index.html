@@ -16,7 +16,7 @@
 
   * { box-sizing: border-box; }
 
-  /* 1. 상하좌우 불필요한 모든 여백 제거 및 중앙 정렬 */
+  /* 1. 상단 밀착 정렬로 변경하여 아래쪽 불필요한 빈공간 제거 */
   html, body {
     margin: 0; 
     padding: 0;
@@ -27,15 +27,15 @@
     background-color: transparent; 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* ★ 중앙 정렬 대신 위쪽 정렬! */
   }
 
-  /* 2. 카드 전체 폭 단축 (480px -> 380px)으로 낭비되는 좌우 여백 제거 */
+  /* 2. 전체 프레임 위치 조율 (브라운 트랙 팝업 높이 90px 고려) */
   #app-cover {
     position: relative;
     width: 380px; 
     height: 100px;
-    margin-top: 35px; /* 브라운 트랙 올라가는 공간 최소화 */
+    margin-top: 90px; /* ★ 트랙이 올라왔을 때 위쪽이 잘리지 않는 딱 맞는 여백 */
   }
 
   #player-track {
@@ -46,7 +46,7 @@
     border-radius: 15px 15px 0 0;
     transition: top 0.4s ease;
     z-index: 1;
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.03);
+    box-shadow: none; /* 상단 트랙 그림자 제거 */
   }
 
   #player-track.active {
@@ -94,18 +94,18 @@
   #s-area { width: 100%; height: 4px; background: #ffe8ee; border-radius: 4px; cursor: pointer; position: relative; }
   #seek-bar { width: 0%; height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.1s linear; }
 
+  /* 3. 하단 플레이어 본체 그림자 완전 제거 (box-shadow: none) */
   #player-content {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
     background: var(--white);
     border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    box-shadow: none; /* ★ 하단 그림자 제거 완료! */
     z-index: 2;
     display: flex;
     align-items: center;
   }
 
-  /* 3. CD 크기는 115px로 큼직하게 유지 + 위치 슬림화 */
   #album-art {
     position: absolute;
     top: -22px; 
@@ -128,12 +128,11 @@
 
   @keyframes spin { 100% { transform: rotate(360deg); } }
 
-  /* 4. 버튼 간격(gap)을 8px로 조여서 오른쪽 버튼 튕겨나감 완벽 방지! */
   #player-controls { 
     margin-left: 138px; 
     display: flex; 
     align-items: center; 
-    gap: 8px; /* 버튼 간격을 가깝게 다이어트 */
+    gap: 8px; 
   }
 
   .control {
