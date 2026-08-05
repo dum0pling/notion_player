@@ -16,9 +16,10 @@
 
   * { box-sizing: border-box; }
 
-  /* ★ 1. 스크롤바 완전 제거 및 화면 중앙 정렬 ★ */
- html, body {
-    margin: 0; padding: 0;
+  /* 1. 상하좌우 불필요한 모든 여백 제거 및 중앙 정렬 */
+  html, body {
+    margin: 0; 
+    padding: 0;
     overflow: hidden !important;
     width: 100%;
     height: 100%;
@@ -27,24 +28,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 40px; /* 브라운 트랙 팝업 공간 확보 */
   }
 
-  /* ★ 2. 플레이어 크기 줄이기 (0.8 = 80% 크기) ★ */
+  /* 2. 카드 전체 폭 단축 (480px -> 380px)으로 낭비되는 좌우 여백 제거 */
   #app-cover {
     position: relative;
-    width: 480px;
+    width: 380px; 
     height: 100px;
-    margin-top: 0px;
-    transform: scale(1); /* 0.8이나 0.85로 원하시는 크기만큼 조절 가능합니다! */
-    transform-origin: center center;
+    margin-top: 35px; /* 브라운 트랙 올라가는 공간 최소화 */
   }
 
   #player-track {
     position: absolute;
-    top: 0; left: 15px; right: 15px;
+    top: 0; left: 10px; right: 10px;
     background: #C2855D;
-    padding: 13px 22px 13px 140px; 
+    padding: 12px 18px 12px 135px; 
     border-radius: 15px 15px 0 0;
     transition: top 0.4s ease;
     z-index: 1;
@@ -52,7 +50,7 @@
   }
 
   #player-track.active {
-    top: -95px;
+    top: -90px;
   }
 
   #album-name { color: var(--text-sub); font-size: 13px; font-weight: 700; }
@@ -87,12 +85,8 @@
   }
 
   @keyframes marquee {
-    0% {
-      transform: translateX(0%);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
   }
 
   #track-time { display: flex; justify-content: space-between; font-size: 11px; color: var(--primary); font-weight: 700; margin-bottom: 5px; }
@@ -102,7 +96,7 @@
 
   #player-content {
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 110%;
+    top: 0; left: 0; width: 100%; height: 100%;
     background: var(--white);
     border-radius: 20px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.1);
@@ -111,12 +105,13 @@
     align-items: center;
   }
 
+  /* 3. CD 크기는 115px로 큼직하게 유지 + 위치 슬림화 */
   #album-art {
-   position: absolute;
-    top: -28px;
-    left: 15px;
-    width: 120px;
-    height: 120px;
+    position: absolute;
+    top: -22px; 
+    left: 12px;
+    width: 115px;
+    height: 115px;
     border-radius: 50%;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     background-color: #fff;
@@ -133,24 +128,25 @@
 
   @keyframes spin { 100% { transform: rotate(360deg); } }
 
+  /* 4. 버튼 간격(gap)을 8px로 조여서 오른쪽 버튼 튕겨나감 완벽 방지! */
   #player-controls { 
-    margin-left: 165px; 
+    margin-left: 138px; 
     display: flex; 
     align-items: center; 
-    gap: 15px; 
+    gap: 8px; /* 버튼 간격을 가깝게 다이어트 */
   }
 
   .control {
     background: none; border: none; cursor: pointer;
     display: flex; justify-content: center; align-items: center;
-    color: #dfdbdf; padding: 10px; transition: 0.2s ease;
+    color: #dfdbdf; padding: 6px; transition: 0.2s ease;
   }
   .control:hover { color: #573D2A; transform: scale(1.1); }
-  .control svg { width: 24px; height: 24px; fill: currentColor; }
+  .control svg { width: 22px; height: 22px; fill: currentColor; }
   
   #play-pause-button {
     background: #573D2A; color: #fff;
-    width: 50px; height: 50px; border-radius: 50%;
+    width: 46px; height: 46px; border-radius: 50%;
     border: none;
     outline: none;
     padding: 0;
