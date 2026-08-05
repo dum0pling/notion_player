@@ -32,10 +32,10 @@
   /* ★ 2. 플레이어 크기 줄이기 (0.8 = 80% 크기) ★ */
   #app-cover {
     position: relative;
-    width: 430px;
+    width: 480px;
     height: 100px;
     margin-top: 50px;
-    transform: scale(0.65); /* 0.8이나 0.85로 원하시는 크기만큼 조절 가능합니다! */
+    transform: scale(0.7); /* 0.8이나 0.85로 원하시는 크기만큼 조절 가능합니다! */
     transform-origin: center center;
   }
 
@@ -112,7 +112,7 @@
 
   #album-art {
     position: absolute;
-    top: -20px; left: 30px;
+    top: -25px; left: 20px;
     width: 120px; height: 120px;
     border-radius: 50%;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -130,7 +130,7 @@
 
   @keyframes spin { 100% { transform: rotate(360deg); } }
 
-  #player-controls { margin-left: 175px; display: flex; align-items: center; gap: 15px; }
+  #player-controls { margin-left: 165px; display: flex; align-items: center; gap: 15px; }
 
   .control {
     background: none; border: none; cursor: pointer;
