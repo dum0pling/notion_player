@@ -48,25 +48,37 @@
   #player-track {
     position: absolute;
     top: 0; left: 10px; right: 10px;
+    height: 85px;
     background: #C2855D;
-    padding: 12px 18px 12px 135px; 
+    /* 왼쪽 패딩을 135px에서 18px로 줄여 좌측 끝으로 배치 */
+    padding: 12px 18px 12px 18px; 
     border-radius: 15px 15px 0 0;
     transition: top 0.4s ease;
     z-index: 1;
-    box-shadow: none !important; /* 그림자 완전 제거 */
+    box-shadow: none !important;
   }
 
   #player-track.active {
     top: -85px;
   }
 
-  #album-name { color: var(--text-sub); font-size: 13px; font-weight: 700; }
+  #album-name { 
+    color: var(--text-sub); 
+    font-size: 13px; 
+    font-weight: 700; 
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    max-width: 100%;
+    text-align: left; /* 좌측 정렬 */
+  }
 
   .track-name-container {
     width: 100%;
     overflow: hidden;
     white-space: nowrap;
     margin: 3px 0 8px 0;
+    text-align: left; /* 좌측 정렬 */
   }
 
   #track-name { 
