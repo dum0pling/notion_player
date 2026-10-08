@@ -108,9 +108,25 @@
     100% { transform: translateX(-50%); }
   }
 
-  #track-time { display: flex; justify-content: space-between; font-size: 11px; color: var(--primary); font-weight: 700; margin-bottom: 5px; }
+  #track-time { 
+    display: flex; 
+    justify-content: space-between; 
+    font-size: 11px; 
+    color: var(--primary); 
+    font-weight: 700; 
+    margin-bottom: 5px; 
+    margin-left: 117px; /* ★ 기존 위치 유지 */
+  }
 
-  #s-area { width: 100%; height: 4px; background: #ffe8ee; border-radius: 4px; cursor: pointer; position: relative; }
+  #s-area { 
+    width: auto; /* 전체 폭 대신 남은 영역 차지 */
+    margin-left: 117px; /* ★ 기존 위치 유지 */
+    height: 4px; 
+    background: #ffe8ee; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    position: relative; 
+  }
   #seek-bar { width: 0%; height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.1s linear; }
 
   /* ★ 3. 하단 플레이어 본체 그림자 0% 및 바닥 여백 제거 ★ */
